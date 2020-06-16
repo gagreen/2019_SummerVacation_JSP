@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>가입</title>
+</head>
+<body>
+<form action="JoinOk" method="post">
+	이름 : <input type="text" name="name"><br/>
+	아이디: <input type="text" name="id"><br/>
+	비밀번호: <input type="password" name="pw"><br/>
+	전화번호: <select name="pn1">
+			<option value="010">010</option>
+			<option value="02" selected="selected">02</option>
+			<option value="011">011</option>
+			<option value="030">030</option>
+		</select> - 
+		<input type="text" name="pn2"> - 
+		<input type="text" name="pn3"><br/>
+	성별 구분: <input type="radio" name="gender" value="male">남
+		<input type="radio" name="gender" value="female">여<br/>
+	<input type="submit" value="전송"><input type="reset" value="취소">
+</form>
+</body>
+</html>

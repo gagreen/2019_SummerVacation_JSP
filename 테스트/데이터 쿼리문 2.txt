@@ -1,0 +1,114 @@
+create table dept(
+deptno number(3) not null primary key,
+dname varchar2(15),
+loc varchar2(15)
+);
+
+create table emp(
+empno number(4) not null primary key,
+ename varchar2(10),
+job varchar2(10),
+mgr number(4),
+hiredate date,
+sal number(10),
+comm number(10),
+deptno number(2) references dept(deptno)
+);
+
+create table salgrade(
+grade number(2),
+losal number(10),
+hosal number(10)
+);
+
+insert into dept values (10, 'accounting', 'new york');
+insert into dept values (20, 'research', 'dallas');
+insert into dept values (30, 'sales', 'chicago');
+insert into dept values (40, 'operations', 'boston');
+
+insert into emp values (7369, 'smith', 'clerk', 7902, TO_DATE('19801217', 'YYYYMMDD'), 800, null, 20);
+insert into emp values (7499, 'allen', 'salesman', 7698, TO_DATE('19810220', 'YYYYMMDD'), 1600, 300, 30);
+insert into emp values (7521, 'ward', 'salesman', 7698, TO_DATE('19810222', 'YYYYMMDD'), 1250, 500, 30);
+insert into emp values (7566, 'jones', 'manager', 7839, TO_DATE('19810402', 'YYYYMMDD'), 2975, null, 20);
+insert into emp values (7654, 'martin', 'salesman', 7698, TO_DATE('19810928', 'YYYYMMDD'), 1250, 1400, 30);
+insert into emp values (7698, 'blake', 'manager', 7839, TO_DATE('19810501', 'YYYYMMDD'), 2850, null, 30);
+insert into emp values (7782, 'clark', 'manager', 7839, TO_DATE('19870906', 'YYYYMMDD'), 2450, null, 10);
+insert into emp values (7788, 'scott', 'analyst', 7566, TO_DATE('19870713', 'YYYYMMDD'), 3000, null, 20);
+insert into emp values (7839, 'king', 'president', null, TO_DATE('19811117', 'YYYYMMDD'), 5000, null, 10);
+insert into emp values (7844, 'turner', 'salesman', 7698, TO_DATE('19810908', 'YYYYMMDD'), 1500, 0, 30);
+insert into emp values (7876, 'adams', 'clerk', 7788, TO_DATE('19870713', 'YYYYMMDD'), 1100, null, 20);
+insert into emp values (7900, 'james', 'clerk', 7698, TO_DATE('19811203', 'YYYYMMDD'), 950, null, 30);
+insert into emp values (7902, 'ford', 'analyst', 7566, TO_DATE('19811203', 'YYYYMMDD'), 3000, null, 20);
+insert into emp values (7932, 'miller', 'clerk', 7782, TO_DATE('19820123', 'YYYYMMDD'), 1300, null, 10);
+
+insert into salgrade values (1, 700, 1200);
+insert into salgrade values (2, 1201, 1400);
+insert into salgrade values (3, 1401, 2000);
+insert into salgrade values (4, 2001, 3000);
+insert into salgrade values (5, 3001, 9999);
+
+-------------------------------------------------------------
+
+1. select empno, ename from emp where ename like 's%';
+
+2. select empno, ename from emp where ename like'%t%';
+
+3. select empno, ename, comm from emp where comm=300 or comm = 500 or comm = 1400;
+
+4. select empno, ename, sal from emp where sal>= 1200 and sal <= 3500;
+
+5. select ename, empno, job, deptno from emp where job = 'manager';
+
+6. select empno, ename, deptno from emp where deptno != 30;
+
+7. select empno, ename from emp where ename not like '%s%';
+
+8. select empno, ename, sal from emp where sal < 1200 or sal >3700;
+
+9. select ename, job from emp where mgr is null;
+
+10. select deptno, AVG(sal) from emp group by deptno;
+
+11. select count(*), count(comm) from emp;
+
+12. select MAX(sal), MIN(sal) from emp group by deptno;
+
+13. select deptno, AVG(sal) from emp group by deptno having AVG(sal) >= 2000;
+
+14. select AVG(sal) from emp where sal>=1000 group by deptno having AVG(sal) >= 2000;
+
+15. select empno, ename, sal from emp order by sal desc, ename;
+
+16. select e.ename, dname from emp e, dept d where e.deptno = d.deptno;
+
+17. select e.ename, e.sal, s.grade from emp e, salgrade s 
+	where s.losal<= e.sal and s.hosal >= e.sal ;
+
+18. select e.ename, d.dname, s.grade from emp e, salgrade s, dept d 
+	where e.deptno = d.deptno and s.losal<= e.sal and s.hosal >= e.sal ;
+
+19. select e.ename "name", u.ename "mgr_name" from emp e, emp u where e.mgr = u.empno;
+
+20. select e.ename, d.dname from emp e, dept d where e.deptno(+) = d.deptno;
+
+21. select e.ename, e.deptno, d.dname from emp e, dept d where e.deptno = d.deptno;
+
+22. select e.ename, e.job, d.deptno, d.loc from emp e, dept d where d.deptno = e.deptno and e.deptno = 30;
+
+23. select e.ename, e.comm, d.dname, d.loc from emp e, dept d where d.deptno = e.deptno and comm is not null;
+
+24. select e.ename, e.deptno, d.dname from emp e, dept d where e.deptno = d.deptno and d.loc = 'DALLAS';
+
+25. select e.ename, d.dname from emp e, dept d where e.deptno = d.deptno and e.ename like '%a%';
+
+26. select e.ename, e.job, e.sal, s.grade from emp e, salgrade s where s.losal<= e.sal and s.hosal >= e.sal ;
+
+27. select e.ename, e.deptno from emp e, (select *from emp where ename='allen') al where e.deptno = al.deptno;
+
+28. select d.dname from emp e, dept d where e.deptno = d.deptno and e.ename = 'jones';
+
+29. select e.ename, d.dname from emp e, dept d where e.deptno = d.deptno and e.deptno = 10; 
+
+30. select e.empno, e.ename, e.sal from emp e where e.sal >= (select AVG(sal) from emp);
+
+31. select e.empno, e.ename from emp e where e.sal = (select MAX(sal) from emp where e.deptno=10);
